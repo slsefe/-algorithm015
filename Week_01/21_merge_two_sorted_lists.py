@@ -12,7 +12,7 @@ class ListNode:
 
 class Solution:
     def mergeTwoLists1(self, l1: ListNode, l2: ListNode) -> ListNode:
-        # 1. iteration
+        # 1. iteration with two pointers, O(n)
         dummy = ListNode(None)
         p = dummy
         while l1 and l2:
@@ -28,7 +28,7 @@ class Solution:
         return dummy.next
 
     def mergeTwoLists2(self, l1: ListNode, l2: ListNode) -> ListNode:
-        # 2. recursion
+        # 2. recursion, O(n)
         if not l1: return l2
         if not l2: return l1
         if l1.val < l2.val:
