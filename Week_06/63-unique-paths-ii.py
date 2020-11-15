@@ -28,14 +28,16 @@
 链接：https://leetcode-cn.com/problems/unique-paths-ii
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 """
+from typing import List
 
 
 class Solution:
     def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
         # DP, O(m*n), O(m*n)
-        if obstacleGrid[0][0] == 1: return 0  # 不用多余计算
+        if obstacleGrid[0][0] == 1:
+            return 0  # 不用多余计算
         m, n = len(obstacleGrid), len(obstacleGrid[0])
-        dp = [[1] * n] * m
+        dp = [[1] * n for _ in range(m)]
         for i in range(m):
             for j in range(n):
                 # 障碍物的路径为0

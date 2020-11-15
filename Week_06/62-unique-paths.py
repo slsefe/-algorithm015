@@ -30,6 +30,7 @@
 链接：https://leetcode-cn.com/problems/unique-paths
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 """
+from functools import lru_cache
 
 
 class Solution:
@@ -38,17 +39,29 @@ class Solution:
         # 1. 带缓存的递归，O(m+n), O(m+n)
         if m == 1 or n == 1:
             return 1
-        return self.uniquePaths(m, n-1) + self.uniquePaths(m-1, n)
+        return self.uniquePaths_1(m, n-1) + self.uniquePaths_1(m-1, n)
 
     def uniquePaths_2(self, m: int, n: int) -> int:
         # 2. DP，O(m*n), O(m*n)
-        dp = [[1] * n for _ in range(m)]
+        dp = [[1] * n for _ in range(m)]  # first row or column is initialized with one
         for i in range(1, m):
             for j in range(1, n):
                 dp[i][j] = dp[i-1][j] + dp[i][j-1]
-        return dp[m-1, n-1]
+        return dp[m-1][n-1]
 
     def uniquePaths_3(self, m: int, n: int) -> int:
+        # 2. DP, O(m*n), O(m*n)
+        # initialized dp table with 0
+        dp = [[0] * n for _ in range(m)]
+        for i in range(m):
+            for j in range(n):
+                if i == 0 or j == 0:
+                    dp[i][j] = 1
+                else:
+                    dp[i][j] = dp[i-1][j] + dp[i][j-1]
+        return dp[m-1][n-1]
+
+    def uniquePaths_4(self, m: int, n: int) -> int:
         # 3. DP, O(m*n), O(2n)
         pre = [1] * n
         cur = [1] * n
@@ -58,7 +71,7 @@ class Solution:
             pre = cur[:]
         return cur[-1]
 
-    def uniquePaths_4(self, m: int, n: int) -> int:
+    def uniquePaths_5(self, m: int, n: int) -> int:
         # 4. DP, O(m*n), O(n)
         cur = [1] * n
         for i in range(1, m):
@@ -66,12 +79,3 @@ class Solution:
                 cur[j] += cur[j-1]
         return cur[-1]
 
-    def uniquePaths_5(self, m: int, n: int) -> int:
-        dp = [[0] * n] * m
-        for i in range(m):
-            for j in range(n):
-                if i == 0 or j == 0:
-                    dp[i][j] = 1
-                else:
-                    dp[i][j] = dp[i-1][j] + dp[i][j-1]
-        return dp[m-1][n-1]
